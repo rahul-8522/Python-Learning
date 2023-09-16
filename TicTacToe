@@ -1,0 +1,215 @@
+board_L11 = board_L12 = board_L13 = board_L21 = board_L22 = board_L23 = board_L31 = board_L32 = board_L33 = ' ___ '
+
+game_over = False
+play_ques = '0'
+player_turn = 1
+win_val = 0
+game_iter_draw = 0
+valid_pos = []
+game_pos_P1 = []
+game_pos_P2 = []
+player_profile = {'Player_Name':['P1','P2'],'Player_Symbol':['X','O']}
+
+print("Welcome to Python Version of Tic-Tac-Toe!\n")
+
+def game_option(play_option, winner):
+
+    global game_over, player_turn, play_ques, win_val, player_profile, win_val, game_pos_P1, game_pos_P2, valid_pos
+    play_ques = play_option
+    if winner == 0 and game_iter_draw !=9:
+        play_ques = input("Do you want to Play the Game ? Input Y/N ")
+
+    while (play_ques.upper() != 'N' or play_ques.upper() != 'Y'):
+
+        if (play_ques.upper() == 'N'):
+            print("Thank You !")
+            game_over = True
+            break
+        elif(play_ques.upper() == 'Y'):
+            game_init(win_val,0)
+            play_game(play_ques)
+            break
+        else:
+            play_ques = input("Invalid Input - > Please Input Only Y/N - >")
+            continue
+
+def game_init(turn,re_init):
+    global player_turn, player_profile, win_val, game_pos_P1, game_pos_P2, valid_pos, game_iter_draw
+    if (re_init == 0 and win_val == 0 and game_iter_draw == 0):
+        player_profile['Player_Name'][0] = input("Enter Player 1 (default symbol 'X') Name - > ")
+        player_profile['Player_Name'][1] = input("Enter Player 2 (default mark 'O') Name - > ")
+    if win_val != 0:
+        player_turn = win_val
+    win_val = 0
+    game_iter_draw = 0
+    game_pos_P1 = [[0,0,0],[0,0,0],[0,0,0]]
+    game_pos_P2 = [[0,0,0],[0,0,0],[0,0,0]]
+    valid_pos = [11,12,13,21,22,23,31,32,33]
+    draw_board(1)
+
+def mark_position(mark_row,mark_col,mark_opt):
+
+    global board_L11, board_L12, board_L13, board_L21, board_L22, board_L23, board_L31, board_L32, board_L33
+    ret_val = True
+
+    if(mark_row == 1 and mark_col == 1):
+        board_L11 = ' _' + mark_opt + '_ '
+
+    elif(mark_row == 1 and mark_col == 2):
+        board_L12 = ' _' + mark_opt + '_ '
+
+    elif(mark_row == 1 and mark_col == 3):
+        board_L13 = ' _' + mark_opt + '_ '
+
+    elif(mark_row == 2 and mark_col == 1):
+        board_L21 = ' _' + mark_opt + '_ '
+
+    elif(mark_row == 2 and mark_col == 2):
+        board_L22 = ' _' + mark_opt + '_ '
+
+    elif(mark_row == 2 and mark_col == 3):
+        board_L23 = ' _' + mark_opt + '_ '
+
+    elif(mark_row == 3 and mark_col == 1):
+        board_L31 = ' _' + mark_opt + '_ '
+
+    elif(mark_row == 3 and mark_col == 2):
+        board_L32 = ' _' + mark_opt + '_ '
+
+    elif(mark_row == 3 and mark_col == 3):
+        board_L33 = ' _' + mark_opt + '_ '
+
+    else:
+        print("You have chosen wrong/invalid position. Try Again with correct position.")
+        draw_board(0)
+        ret_val = False
+
+    return ret_val
+
+def play_game(play_ques):
+
+    global game_over, player_turn, win_val, player_profile, win_val, game_pos_P1, game_pos_P2, valid_pos, game_iter_draw
+
+    while game_over is False:
+
+        if (play_ques.upper() == 'Y' ):
+
+            if player_turn == 1:
+                pos_mark_P1 = input(player_profile['Player_Name'][0] + ': Its Your turn - Choose position to mark -> ')
+
+                if(pos_mark_P1.isnumeric()):
+                    pos_mark_P1 = int(pos_mark_P1)
+
+                if(pos_mark_P1 in valid_pos):
+
+                    if ( (game_pos_P1[pos_mark_P1//10 - 1][pos_mark_P1%10 - 1] !=0) or (game_pos_P2[pos_mark_P1//10 - 1][pos_mark_P1%10 - 1] !=0) ):
+                        print("Sorry, You have chosen an already marked position. Try Again with correct position.")
+
+                    elif (mark_position(pos_mark_P1//10,pos_mark_P1%10,player_profile['Player_Symbol'][0])):
+                        game_pos_P1[pos_mark_P1//10 - 1][pos_mark_P1%10 - 1] = 1
+                        game_iter_draw+=1
+                        player_turn = 2
+
+                else:
+                    print("You have chosen wrong/invalid position. Try Again with correct position.")
+                    draw_board(0)
+                    continue
+
+            elif player_turn == 2:
+                pos_mark_P2 = input(player_profile['Player_Name'][1] + ': Its Your turn - Choose position to mark -> ')
+
+                if(pos_mark_P2.isnumeric()):
+                    pos_mark_P2 = int(pos_mark_P2)
+
+                if(pos_mark_P2 in valid_pos):
+
+                    if ( (game_pos_P2[pos_mark_P2//10 - 1][pos_mark_P2%10 - 1] !=0) or (game_pos_P1[pos_mark_P2//10 - 1][pos_mark_P2%10 - 1] !=0) ):
+                        print("Sorry, You have chosen an already marked position. Try Again with correct position.")
+
+                    elif (mark_position(pos_mark_P2//10,pos_mark_P2%10,player_profile['Player_Symbol'][1])):
+                        game_pos_P2[pos_mark_P2//10 - 1][pos_mark_P2%10 - 1] = 1
+                        game_iter_draw+=1
+                        player_turn = 1
+
+                else:
+                    print("You have chosen wrong/invalid position. Try Again with correct position.")
+                    draw_board(0)
+                    continue
+            else:
+                continue
+
+            draw_board(0)
+
+        elif (play_ques.upper() == 'N'):
+            print("Thank You !")
+            game_over = True
+
+        else:
+            play_ques = input("Invalid Input - > Please Input Only Y/N - >")
+            continue
+
+        win_val = over_or_abort(game_pos_P1,game_pos_P2) #Check for Winner
+
+        if win_val == 1 or win_val == 2 or game_iter_draw == 9:
+            play_ques = input("Do you want to Continue the Game ? Input Y/N ")
+            game_option(play_ques, win_val)
+
+def over_or_abort(game_pos_P1,game_pos_P2):
+    global game_iter_draw
+    if check_win_P1(game_pos_P1) == 1:
+        print(f"Congrats, {player_profile['Player_Name'][0]} ! You Beat {player_profile['Player_Name'][1]}")
+        return 1
+    elif check_win_P2(game_pos_P2) == 2:
+        print(f"Congrats, {player_profile['Player_Name'][1]} ! You Beat {player_profile['Player_Name'][0]}")
+        return 2
+    elif game_iter_draw == 9:
+        print(f"Draw ! Tough Competition, {player_profile['Player_Name'][1]} and {player_profile['Player_Name'][0]}.")
+        return 0
+    else:
+        return 0
+
+def check_win_P1(game_pos_P1):
+
+    if ( (game_pos_P1[0][0] == 1 and game_pos_P1[0][1] == 1 and game_pos_P1[0][2] == 1) or #Win R1
+         (game_pos_P1[1][0] == 1 and game_pos_P1[1][1] == 1 and game_pos_P1[1][2] == 1) or #Win R2
+         (game_pos_P1[2][0] == 1 and game_pos_P1[2][1] == 1 and game_pos_P1[2][2] == 1) or #Win R3
+         (game_pos_P1[0][0] == 1 and game_pos_P1[1][0] == 1 and game_pos_P1[2][0] == 1) or #Win C1
+         (game_pos_P1[0][1] == 1 and game_pos_P1[1][1] == 1 and game_pos_P1[2][1] == 1) or #Win C2
+         (game_pos_P1[0][2] == 1 and game_pos_P1[1][2] == 1 and game_pos_P1[2][2] == 1) or #Win C3
+         (game_pos_P1[0][0] == 1 and game_pos_P1[1][1] == 1 and game_pos_P1[2][2] == 1) or #Win Diag TL-BR
+         (game_pos_P1[0][2] == 1 and game_pos_P1[1][1] == 1 and game_pos_P1[2][0] == 1)    #Win Diag TR-BL
+    ):
+        return 1
+
+    else:
+        return 0
+
+def check_win_P2(game_pos_P2):
+
+    if ( (game_pos_P2[0][0] == 1 and game_pos_P2[0][1] == 1 and game_pos_P2[0][2] == 1) or #Win R1
+         (game_pos_P2[1][0] == 1 and game_pos_P2[1][1] == 1 and game_pos_P2[1][2] == 1) or #Win R2
+         (game_pos_P2[2][0] == 1 and game_pos_P2[2][1] == 1 and game_pos_P2[2][2] == 1) or #Win R3
+         (game_pos_P2[0][0] == 1 and game_pos_P2[1][0] == 1 and game_pos_P2[2][0] == 1) or #Win C1
+         (game_pos_P2[0][1] == 1 and game_pos_P2[1][1] == 1 and game_pos_P2[2][1] == 1) or #Win C2
+         (game_pos_P2[0][2] == 1 and game_pos_P2[1][2] == 1 and game_pos_P2[2][2] == 1) or #Win C3
+         (game_pos_P2[0][0] == 1 and game_pos_P2[1][1] == 1 and game_pos_P2[2][2] == 1) or #Win Diag TL-BR
+         (game_pos_P2[0][2] == 1 and game_pos_P2[1][1] == 1 and game_pos_P2[2][0] == 1)    #Win Diag TR-BL
+    ):
+        return 2
+
+    else:
+        return 0
+
+def draw_board(redraw):
+    global board_L11, board_L12, board_L13, board_L21, board_L22, board_L23, board_L31, board_L32, board_L33
+    if redraw:
+        board_L11 = board_L12 = board_L13 = board_L21 = board_L22 = board_L23 = board_L31 = board_L32 = board_L33 = ' ___ '
+
+    print(board_L11+ '|' + board_L12 + '|' + board_L13)
+    print(board_L21+ '|' + board_L22 + '|' + board_L23)
+    print(board_L31+ '|' + board_L32 + '|' + board_L33)
+
+def exit_game():
+    game_over = True
+
+game_option('0',0)
