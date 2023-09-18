@@ -1,0 +1,32 @@
+pal = bool()
+palindrome = open('palindrome.txt','a')
+#with open('palindrome.txt','a') as palindrome:
+palindrome.seek(0)
+palindrome.truncate()
+            
+with open('palindrome_file_input.txt','r') as palindrome_input:
+    palindrome_input.seek(0)
+    i_string = palindrome_input.read().splitlines()
+  
+for i in range(len(i_string)):
+    for j in range(len(i_string[i])):
+        if(i_string[i][j] == i_string[i][- j -1]):
+            if( (2*j + 1) >= len(i_string[i]) ):
+                pal = True
+                break
+            else:
+                continue
+        else:
+            pal = bool(False)
+            break
+    
+    with open('palindrome.txt','a') as palindrome:
+            if(pal):
+                print("Input String is - > {input} -> is a Palindrome".format(input=i_string[i]))
+                write_to_file = "Input String is -> " + i_string[i] + " -> And it is a Palindrome \n"
+                palindrome.write(write_to_file)
+            else:
+                print("Input String is - > {input} -> And it is Not a Palindrome".format(input=i_string[i]))
+                write_to_file = "Input String is -> " + i_string[i] + " -> And it is Not a Palindrome \n"
+                palindrome.write(write_to_file)
+palindrome.close()
