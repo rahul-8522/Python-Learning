@@ -38,6 +38,8 @@ def game_init(turn,re_init):
     if (re_init == 0 and win_val == 0 and game_iter_draw == 0):
         player_profile['Player_Name'][0] = input("Enter Player 1 (default symbol 'X') Name - > ")
         player_profile['Player_Name'][1] = input("Enter Player 2 (default mark 'O') Name - > ")
+        print(f"""{player_profile['Player_Name'][0]} and {player_profile['Player_Name'][1]}, Ready to Start.
+                    \nChoose your position carefully e.g. if you want to mark at Row1-Col1, then Chose 11""")
     if win_val != 0:
         player_turn = win_val
     win_val = 0
